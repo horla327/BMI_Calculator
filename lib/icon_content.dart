@@ -1,14 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-
-const labelTextStyle = TextStyle(fontSize: 18.0, color: Color(0xFF8D8E98));
+import 'constants.dart';
 
 class IconContent extends StatelessWidget {
   final IconData icon;
   final String label;
 
-  IconContent(this.icon, this.label);
+  IconContent({required this.icon, required this.label});
 
   @override
   Widget build(BuildContext context) {
