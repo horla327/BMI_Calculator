@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
 import 'constants.dart';
@@ -7,6 +7,7 @@ class IconContent extends StatelessWidget {
   final IconData icon;
   final String label;
 
+  // ignore: prefer_const_constructors_in_immutables
   IconContent({required this.icon, required this.label});
 
   @override

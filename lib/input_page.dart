@@ -1,10 +1,15 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_key_in_widget_constructors, must_be_immutable, unused_label, avoid_print, empty_constructor_bodies
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'icon_content.dart';
 import 'reuseable_card.dart';
 import 'constants.dart';
+import 'result_page.dart';
+import 'bottom_button.dart';
+import 'round_icon.dart';
+import 'calculator_brain.dart';
 
 enum Gender {
   female,
@@ -29,18 +34,12 @@ class _InputPageState extends State<InputPage> {
         title: Text('BMI CALCULATOR'),
       ),
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Expanded(
               child: Row(
             children: <Widget>[
               Expanded(
                 child: ReuseableCard(
-                  onPress: () {
-                    setState(() {
-                      selectedGender = Gender.male;
-                    });
-                  },
                   colour: selectedGender == Gender.male
                       ? activeCardColour
                       : inactiveCardColour,
@@ -48,15 +47,15 @@ class _InputPageState extends State<InputPage> {
                     icon: FontAwesomeIcons.mars,
                     label: 'MALE',
                   ),
+                  onPress: () {
+                    setState(() {
+                      selectedGender = Gender.male;
+                    });
+                  },
                 ),
               ),
               Expanded(
                 child: ReuseableCard(
-                  onPress: () {
-                    setState(() {
-                      selectedGender = Gender.female;
-                    });
-                  },
                   colour: selectedGender == Gender.female
                       ? activeCardColour
                       : inactiveCardColour,
@@ -64,15 +63,17 @@ class _InputPageState extends State<InputPage> {
                     icon: FontAwesomeIcons.venus,
                     label: 'FEMALE',
                   ),
+                  onPress: () {
+                    setState(() {
+                      selectedGender = Gender.female;
+                    });
+                  },
                 ),
               ),
             ],
           )),
           Expanded(
             child: ReuseableCard(
-              onPress: () {
-                setState(() {});
-              },
               colour: activeCardColour,
               cardChild: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -115,6 +116,9 @@ class _InputPageState extends State<InputPage> {
                   )
                 ],
               ),
+              onPress: () {
+                setState(() {});
+              },
             ),
           ),
           Expanded(
@@ -122,9 +126,6 @@ class _InputPageState extends State<InputPage> {
             children: <Widget>[
               Expanded(
                 child: ReuseableCard(
-                  onPress: () {
-                    setState(() {});
-                  },
                   colour: activeCardColour,
                   cardChild: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -162,13 +163,13 @@ class _InputPageState extends State<InputPage> {
                           ]),
                     ],
                   ),
+                  onPress: () {
+                    setState(() {});
+                  },
                 ),
               ),
               Expanded(
                 child: ReuseableCard(
-                  onPress: () {
-                    setState(() {});
-                  },
                   colour: activeCardColour,
                   cardChild: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -206,40 +207,31 @@ class _InputPageState extends State<InputPage> {
                           ]),
                     ],
                   ),
+                  onPress: () {
+                    setState(() {});
+                  },
                 ),
               ),
             ],
           )),
-          Container(
-            color: bottomContainerColour,
-            margin: EdgeInsets.only(top: 10.0),
-            width: double.infinity,
-            height: bottomContainerHeight,
-          ),
+          BottomButton(
+              buttonTitle: 'CALCULATE',
+              onTap: () {
+                CalculatorBrain calc =
+                    CalculatorBrain(height: height, weight: weight);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ResultsPage(
+                      bmiResult: calc.calculateBMI(),
+                      resultText: calc.getResults(),
+                      interpretation: calc.getInterpretation(),
+                    ),
+                  ),
+                );
+              }),
         ],
       ),
-    );
-  }
-}
-
-class RoundIconButton extends StatelessWidget {
-  const RoundIconButton({required this.icon, required this.onPressed});
-
-  final IconData icon;
-  final Function onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return RawMaterialButton(
-      elevation: 0.0,
-      child: Icon(icon),
-      onPressed: () {},
-      constraints: BoxConstraints.tightFor(
-        width: 56.0,
-        height: 56.0,
-      ),
-      shape: CircleBorder(),
-      fillColor: Color(0xFF4C4F5E),
     );
   }
 }
